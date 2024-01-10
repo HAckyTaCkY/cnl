@@ -1,0 +1,143 @@
+Bit stuffing
+
+#include<stdio.h>
+#include<string.h>
+
+int main() {
+    int count = 6;
+    char flag[] = "01111110", src[100], dest[200];
+    
+    printf("\n\n----------------- Bit Stuffing ------------------------\n\n");
+    printf("Enter the data in binary: ");
+    scanf("%s", src);
+    
+    strcpy(dest, flag);
+
+    for (int si = 0, di = strlen(flag); src[si] != '\0'; si++, di++) {
+        if (src[si] == '1')
+            count++;
+        else
+            count = 0;
+        
+        dest[di] = src[si];
+
+        if (count == 5) {
+            dest[++di] = '0';
+            count = 6;
+        }
+    }
+
+    dest[strlen(dest)] = '\0';
+    strcat(dest, flag);
+
+    printf("\nStuffed data is: %s\n", dest);
+
+    return 0;
+}
+
+
+
+
+charcter stuffing
+
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+
+int main() {
+    char start[] = "*", stop[] = "*";
+    char src[MAX], dest[MAX];
+    int si = 0, di = 0;
+
+    printf("\n\n----------------- Character Stuffing ------------------------\n\n");
+    printf("Enter the frame data in ASCII: ");
+    gets(src);
+
+    strcpy(dest, start);
+    di = strlen(start);
+
+    while (src[si] != '\0') {
+        if (src[si] == '*' || src[si] == '$') {
+            dest[di++] = '$';
+        }
+        dest[di++] = src[si++];
+    }
+    dest[di] = '\0';
+    strcat(dest, stop);
+
+    printf("\nCharacter stuffed frame is: %s\n", dest);
+    getchar();
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+dijkstra
+
+#include <stdio.h>
+
+void dijkstra(int n, int v, int cost[10][10], int dist[10]) {
+    int visited[10], min, count, u, w;
+
+    for (int i = 0; i < n; i++) {
+        visited[i] = 0;
+        dist[i] = cost[v][i];
+    }
+
+    visited[v] = 1;
+    dist[v] = 0;
+    count = 1;
+    
+    while (count < n - 1) {
+        min = 999;
+        for (w = 0; w < n; w++) {
+            if (dist[w] < min && !visited[w]) {
+                min = dist[w];
+                u = w;
+            }
+        }
+
+        visited[u] = 1;
+        count++;
+
+        for (w = 0; w < n; w++) {
+            if (dist[u] + cost[u][w] < dist[w] && !visited[w]) {
+                dist[w] = dist[u] + cost[u][w];
+            }
+        }
+    }
+}
+
+int main() {
+    int n, v, cost[10][10], dist[10];
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+    
+    printf("Enter cost matrix (for infinity, enter 999):\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+
+    printf("Enter source vertex: ");
+    scanf("%d", &v);
+    
+    dijkstra(n, v, cost, dist);
+    
+    printf("\nShortest paths from vertex %d:\n", v);
+    for (int i = 0; i < n; i++) {
+        if (i != v) {
+            printf("%d -> %d = %d\n", v, i, dist[i]);
+        }
+    }
+
+    return 0;
+}
